@@ -1,0 +1,22 @@
+{
+  "name": "mod-clean",
+  "version": "1.0.0",
+  "description": "Gulp clean",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alvNa/nodejs"
+  },
+  "author": "alvNa",
+  "license": "ISC",
+  "dependencies": {
+    "del": "^2.2.0",
+    "gulp": "^3.9.0",
+    "gulp-strip-debug": "^1.1.0",
+    "gulp-util": "^3.0.7",
+    "vinyl-paths": "^2.1.0"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "mod-server",
+  "version": "1.0.0",
+  "description": "Module server tasks",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alvNa/nodejs"
+  },
+  "author": "alvNa",
+  "license": "ISC",
+  "dependencies": {
+    "browser-sync": "^2.10.1",
+    "gulp": "^3.9.0",
+    "gulp-docco": "0.0.4"
+  }
+}

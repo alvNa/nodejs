@@ -1,0 +1,20 @@
+{
+  "name": "mod-test",
+  "version": "1.0.0",
+  "description": "Module test tasks",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alvNa/nodejs"
+  },
+  "author": "alvNa",
+  "license": "ISC",
+  "dependencies": {
+    "gulp": "^3.9.0",
+    "gulp-util": "^3.0.7",
+    "karma": "^0.13.16"
+  }
+}
