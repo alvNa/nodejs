@@ -1,16 +1,17 @@
 'use strict';
 
 var gulp = require('gulp');
-var gulpUtil = require("gulp-util");
+var gulpUtil = require('gulp-util');
 var Server = require('karma').Server;
 
 module.exports = function(gulp, config) {
+
   /**
    * Run test once and exit
    */
   gulp.task('karma-run', function(done) {
     new Server({
-      configFile: __dirname + '/../karma.conf.js',
+      configFile: config.baseDir + '/' + config.karmaConf,
       singleRun: false
     }, function() {
       done();
@@ -22,7 +23,8 @@ module.exports = function(gulp, config) {
    */
   gulp.task('karma-single-run', function(done) {
     new Server({
-      configFile: __dirname + '/../karma.conf.js'
+      configFile: config.baseDir + '/' + config.karmaConf,
+      singleRun: true
     }, function() {
       done();
     }).start();
