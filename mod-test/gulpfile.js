@@ -13,8 +13,9 @@ module.exports = function(gulp, config) {
     new Server({
       configFile: config.baseDir + '/' + config.karmaConf,
       singleRun: false
-    }, function() {
+    }, function(exitCode) {
       done();
+      process.exit(exitCode);
     }).start();
   });
 
@@ -25,8 +26,9 @@ module.exports = function(gulp, config) {
     new Server({
       configFile: config.baseDir + '/' + config.karmaConf,
       singleRun: true
-    }, function() {
+    }, function(exitCode) {
       done();
+      process.exit(exitCode);
     }).start();
   });
 };
