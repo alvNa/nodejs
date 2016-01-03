@@ -7,11 +7,13 @@ var angularFilesort = require('gulp-angular-filesort');
 var inject = require('gulp-inject');
 var bowerFiles = require('main-bower-files');
 var docco = require('gulp-docco');
+var uglify = require('gulp-uglify');
+var concat = require('gulp-concat')
 
 module.exports = function(gulp, config) {
 
   // Injecting the compiled files into the template
-  gulp.task('inject', function() {
+  gulp.task('inject-src', function() {
 
     gulpUtil.log('Inject bower dependencies and angularjs module files in order into the index.html');
 
@@ -28,7 +30,7 @@ module.exports = function(gulp, config) {
   });
 
   // Injecting the compiled files into the template
-  gulp.task('pre-test', function() {
+  gulp.task('inject-test', function() {
 
     gulpUtil.log('Inject bower dependencies and angularjs module files in order into karma.conf');
 
@@ -41,8 +43,8 @@ module.exports = function(gulp, config) {
         starttag: 'inject:js',
         endtag: '// endinject',
         addRootSlash: false,
-        transform: function (filepath, file, i, length) {
-          return '\'' + filepath + '\'' + (i + 1 < length ? ',' : '');
+        transform: function(filepath, file, i, length) {
+          return '\'' + filepath + '\'' + (i + 1 < length ? ',' : ',');
         }
       }))
       .pipe(gulp.dest('./'));
@@ -55,4 +57,17 @@ module.exports = function(gulp, config) {
       .pipe(docco())
       .pipe(gulp.dest(config.buildDir + 'docs'));
   });
+
+  gulp.task('uglify-js', function() {
+    return gulp.src(config.src + 'js/**/*.js')
+      .pipe(angularFilesort())
+      .pipe(uglify({
+        compress: {
+          drop_console: true
+        }
+      }))
+      .pipe(concat(config.appName + '.min.js'))
+      .pipe(gulp.dest(config.dist));
+  });
+
 };
