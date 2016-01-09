@@ -1,8 +1,8 @@
 'use strict';
 
 var gulp = require('gulp');
-var browserSync = require('browser-sync').create();
 var docco = require('gulp-docco');
+//var browserSync = require('browser-sync').create();
 
 module.exports = function(gulp, config) {
   // Generate documentation pages and save into `docs` directory.
@@ -10,30 +10,24 @@ module.exports = function(gulp, config) {
     return gulp.src(['src/js/**/*.js'])
       // Docco generated files will be saved in the `docs` directory multiple files
       .pipe(docco())
-      .pipe(gulp.dest('build/docs'));
+      .pipe(gulp.dest(config.buildDir + 'docs'));
   });
 
-  // Static server
-  gulp.task('browser-sync', function() {
-    browserSync.init({
-      notify: false,
-      port: 9000,
-      //proxy: 'yourlocal.dev'
-      server: {
-        baseDir: 'src',
-        routes: {
-          '/bower_components': './bower_components'
-        },
-        open: false
-      }
+  var expressServer = require(config.baseDir + '/' + config.server + '/server.js')(config);
+
+  gulp.task('server-run', function() {
+    // Start the server at the beginning of the task 
+    expressServer.run();
+    // add browserSync.reload to the tasks array to make all browsers reload after tasks are complete.
+    gulp.watch(['src/js/**/*.js',config.server + '/routes/**/*.js'], function(){
+      console.log('changes ...');
+      expressServer.reload();
     });
-
-    // add browserSync.reload to the tasks array to make
-    // all browsers reload after tasks are complete.
-    gulp.watch(['src/js/**/*.js'], browserSync.reload);
   });
 
-  gulp.task('browser-stop', function() {
-    browserSync.exit();
+  gulp.task('server-stop', function() {
+    // Stop the server
+    expressServer.stop();
   });
+
 };

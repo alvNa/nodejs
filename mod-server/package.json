@@ -15,6 +15,10 @@
   "dependencies": {
     "browser-sync": "^2.10.1",
     "gulp": "^3.9.0",
-    "gulp-docco": "0.0.4"
+    "gulp-docco": "0.0.4",
+    "gulp-express": "^0.3.5"
+  },
+  "devDependencies": {
+    "gulp-nodemon": "^2.0.6"
   }
 }
