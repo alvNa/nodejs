@@ -2,35 +2,10 @@
 
 var gulp = require('gulp');
 var docco = require('gulp-docco');
-var express = require('express');
 var browserSync = require('browser-sync');
-var fs = require('fs');
-var path = require('path');
+var server = require('gulp-express');
 
 module.exports = function(gulp, config) {
-  var app = express();
-  var port = process.env.PORT || config.port;
-  var hasStarted = false;
-
-  app.use(express.static(config.srcDir));
-  app.use(config.bower, express.static(config.bowerDir));
-
-  //Load all files in serverDir directory
-  function loadRoutes(serverDir, app) {
-    fs.readdirSync(serverDir).forEach(function(file) {
-      if (path.extname(file) === '.js') {
-        require(serverDir + '/' + file)(app);
-      }
-    });
-  }
-
-  function listening() {
-    browserSync({
-      port: port,
-      proxy: 'localhost:' + port,
-      files: [config.src + '/**/*.*']
-    });
-  }
 
   // Generate documentation pages and save into `docs` directory.
   gulp.task('docs', function() {
@@ -41,20 +16,11 @@ module.exports = function(gulp, config) {
   });
 
   gulp.task('server-run', function() {
-    // Start the server at the beginning of the task 
-    if (!hasStarted) {
-      loadRoutes(config.serverDir, app);
-      app.listen(port, listening);
-      hasStarted = true;
-    }
-
-    // add browserSync.reload to the tasks array to make all browsers reload after tasks are complete.
-    gulp.watch([config.src + '/js/**/*.js', config.server + '/**/*.js'], function(){
-      console.log('changes in code ...');
-      loadRoutes(config.serverDir, app);
-      //app.notify();
-      browserSync.reload();
-    });
+    server.run([config.serverDir + '/app.js']);
+ 
+    // Restart the server when file changes 
+    gulp.watch([config.src + '/**/*.js'], browserSync.reload);
+    gulp.watch([config.serverDir + '/**/*.js'],[server.run]);
   });
 
   gulp.task('server-stop', function() {
